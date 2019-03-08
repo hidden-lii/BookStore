@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE struts PUBLIC "-//Apache Software Foundation//DTD Struts Configuration 2.3//EN" "http://struts.apache.org/dtds/struts-2.3.dtd" >
+<struts>
+  <constant name="struts.devMode" value="true" />
+  <constant name="struts.objectFactory" value="spring" />
+  <constant name="struts.i18n.encoding" value="utf-8" />
+  <package name="digital" namespace="/" extends="struts-default">	
+		<!-- 配置拦截器AuthorizationInterceptor -->
+		<interceptors>
+			<interceptor name="loginCheck" class="com.lii.interceptor.AuthorizationInterceptor"></interceptor>
+		</interceptors>	
+		<global-results>
+			<result name="login">/login.jsp</result>
+		</global-results>
+		
+		<!-- 为类中的方法配置映射 -->
+		
+		<action name="list" class="com.lii.action.BookInfoAction" method="list">
+			<result name="index">/index.jsp</result>
+		</action>
+		
+		<action name="logOut" class="com.lii.action.UserInfoAction" method="logOut">
+			<result name="index" type="redirectAction">list</result>
+		</action>
+		
+		<action name="show" class="com.lii.action.BookInfoAction" method="show">
+			<result name="show">/show.jsp</result>
+		</action>
+		<action name="addtoshopcart" class="com.lii.action.CartAction" method="addtoshopcart">
+			<result name="shopCart">/cart.jsp</result>
+			<interceptor-ref name="loginCheck"/>
+			<interceptor-ref name="defaultStack"/>
+		</action>
+		
+		<action name="updateSelectedQuantity" class="com.lii.action.CartAction" method="updateSelectedQuantity">
+			<result name="shopCart">/cart.jsp</result>
+		</action>
+		<action name="deleteSelectedOrders" class="com.lii.action.CartAction" method="deleteSelectedOrders">
+			<result name="shopCart">/cart.jsp</result>
+		</action>
+		<action name="clearCart" class="com.lii.action.CartAction" method="clearCart">
+			<result name="shopCart">/cart.jsp</result>
+		</action>
+		
+		<action name="addOrderInfo" class="com.lii.action.OrderAction" method="addOrderInfo">
+			<result name="index" type="redirectAction">toMyOrderInfo</result>
+		</action>
+		
+		<!-- 得到我的订单信息 -->
+		 <action name="toMyOrderInfo" class="com.lii.action.OrderAction" method="toMyOrderInfo">
+		 	<result name="myOrderInfo">/myorder.jsp</result>
+		 </action>
+		<!-- 得到详细订单列表 -->
+		<action name="toOrderDetail" class="com.lii.action.OrderAction" method="toOrderDetail">
+			<result name="toOrderDetail">/myorderdetail.jsp</result>
+		</action> 
+		
+		<!-- 删除指定订单 -->
+		<action name="deleteOrderInfo" class="com.lii.action.OrderAction" method="deleteOrderInfo">
+			<result name="myOrderInfo" type="redirectAction">toMyOrderInfo</result>
+		</action>
+	</package>
+</struts>
